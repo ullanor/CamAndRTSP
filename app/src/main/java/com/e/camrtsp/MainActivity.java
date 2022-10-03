@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { if(AppManager.CUR_FRAGMENT != settingsId) ChangeAppFragment(settingsId);}});
 
+        TextView textVersion = findViewById(R.id.textVersion);
+        String textVer = "v"+BuildConfig.VERSION_NAME;
+        textVersion.setText(textVer);
+
         TextCamera = findViewById(R.id.textCamera);
         if(AppManager.FIRST_START){ChangeAppFragment(settingsId); AppManager.FIRST_START = false;}
         else ChangeAppFragment(AppManager.CUR_FRAGMENT);//keep previous fragment!
