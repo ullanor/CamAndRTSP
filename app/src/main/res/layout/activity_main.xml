@@ -9,6 +9,7 @@ android:background="@color/colorPrimaryDark"
 android:orientation="vertical">
 
 <LinearLayout
+    android:id="@+id/MainOptionsLayout"
     android:layout_width="wrap_content"
     android:layout_height="40dp"
     android:layout_gravity="center"
@@ -23,7 +24,7 @@ android:orientation="vertical">
         android:textColor="#25FF29"/>
     <ImageButton
         android:id="@+id/btnCamera"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_videocam_blue_32dp"
         android:scaleType="fitCenter"
@@ -36,7 +37,7 @@ android:orientation="vertical">
         app:srcCompat="@drawable/ic_settings_green_32dp"
         android:scaleType="fitCenter"
         android:background="@null"
-        android:layout_marginLeft="100dp"/>
+        android:layout_marginLeft="30dp"/>
     <TextView
         android:id="@+id/textVersion"
         android:layout_width="wrap_content"

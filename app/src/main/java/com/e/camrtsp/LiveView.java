@@ -18,6 +18,7 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 import org.videolan.libvlc.util.VLCVideoLayout;
 
+
 public class LiveView extends Fragment implements MediaPlayer.EventListener{
 
 
@@ -43,7 +44,6 @@ public class LiveView extends Fragment implements MediaPlayer.EventListener{
         mediaPlayer = new MediaPlayer(libVlc);
         mediaPlayer.setEventListener(this);
     }
-
 
     @Override
     public void onEvent(MediaPlayer.Event event)

@@ -4,17 +4,65 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     final private int settingsId = 1;
     final private int liveId = 2;
+    LinearLayout MainOptionsLayout;
     TextView TextCamera;
+    TextView textVersion;
+
+    //App Timer---+
+    Timer timer;
+    TimerTask timerTask;
+    int time = 0;
+    boolean timerHasStarted = false;
+    String timerInfo;
+
+    private void StartTimer(){
+        if(timerHasStarted)return;
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        time++;
+                        timerInfo = "Time: "+time;
+                        textVersion.setText(timerInfo);
+                        if(time > 30){ //timeout!
+                            TextCamera.setText("Cannot load stream!");
+                            StopTimer();
+                        }
+                    }
+                });
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask,1000,1000);
+        timerHasStarted = true;
+    }
+
+    private void StopTimer(){
+        if(!timerHasStarted)return;
+        textVersion.setText("");
+        timerTask.cancel();
+        time = 0;
+        timerHasStarted = false;
+        timer = null;
+    }
+    //---+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +80,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { if(AppManager.CUR_FRAGMENT != settingsId) ChangeAppFragment(settingsId);}});
 
-        TextView textVersion = findViewById(R.id.textVersion);
+        textVersion = findViewById(R.id.textVersion);
         String textVer = "v"+BuildConfig.VERSION_NAME;
         textVersion.setText(textVer);
 
         TextCamera = findViewById(R.id.textCamera);
+        //check orientation
+        MainOptionsLayout = findViewById(R.id.MainOptionsLayout);
+        int orientation = this.getResources().getConfiguration().orientation;
+        if(orientation == 1)MainOptionsLayout.setVisibility(View.VISIBLE); else MainOptionsLayout.setVisibility(View.GONE);
+
         if(AppManager.FIRST_START){ChangeAppFragment(settingsId); AppManager.FIRST_START = false;}
         else ChangeAppFragment(AppManager.CUR_FRAGMENT);//keep previous fragment!
     }
 
     private void ChangeAppFragment(int id){
         Fragment fragment = null;
+        if(id == settingsId) {StopTimer(); fragment = new Settings();}
+        else if(id == liveId) {StartTimer(); fragment = new LiveView();}
         TextCamera.setText(AppManager.CAM_DEF);
-        if(id == settingsId) {fragment = new Settings();}
-        else if(id == liveId) {fragment = new LiveView();}
 
         AppManager.CUR_FRAGMENT = id;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -53,8 +106,12 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    //from cam fragment
     public void ToggleLoading(boolean loading){
         if(loading) TextCamera.setText(AppManager.CAM_LOAD);
-        else TextCamera.setText(AppManager.CAM_DONE);
+        else {
+            TextCamera.setText(AppManager.CAM_DONE);
+            StopTimer(); //Stream was loaded!
+        }
     }
 }

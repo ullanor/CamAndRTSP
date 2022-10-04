@@ -10,7 +10,7 @@ public class AppManager {
     static String NET_CACHE_STRING = ":network-caching=";
 
     //camera info
-    static String CAM_DEF = "Get -> ";
-    static String CAM_LOAD = "Loading.. ";
-    static String CAM_DONE = "Live ";
+    static String CAM_DEF = "Get ->";
+    static String CAM_LOAD = "Loading..";
+    static String CAM_DONE = "Live";
 }
