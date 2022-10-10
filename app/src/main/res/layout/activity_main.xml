@@ -37,7 +37,7 @@ android:orientation="vertical">
         app:srcCompat="@drawable/ic_settings_green_32dp"
         android:scaleType="fitCenter"
         android:background="@null"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="0dp"/>
     <TextView
         android:id="@+id/textVersion"
         android:layout_width="wrap_content"

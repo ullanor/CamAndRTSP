@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.icu.text.UnicodeSetSpanner;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -82,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         textVersion = findViewById(R.id.textVersion);
         String textVer = "v"+BuildConfig.VERSION_NAME;
-        textVersion.setText(textVer);
+        String buildVer = "\nabi: "+ Build.SUPPORTED_ABIS[0];
+        textVersion.setText(textVer+buildVer);
 
         TextCamera = findViewById(R.id.textCamera);
         //check orientation
